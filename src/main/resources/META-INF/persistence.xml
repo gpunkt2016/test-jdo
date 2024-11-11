@@ -6,7 +6,8 @@
 
     <persistence-unit name="MyTest">
         <!-- Add all of your model classes here -->
-        <class>mydomain.model.Person</class>
+        
+        <mapping-file>mydomain/model/package.jdo</mapping-file>
         <exclude-unlisted-classes />
         <properties>
             <!-- Update these datastore details if different -->
@@ -15,9 +16,9 @@
             <property name="javax.jdo.option.ConnectionURL" value="jdbc:h2:mem:nucleus"/>
             <property name="javax.jdo.option.ConnectionUserName" value="sa"/>
             <property name="javax.jdo.option.ConnectionPassword" value=""/>
-
+            
             <property name="datanucleus.schema.autoCreateAll" value="true"/>
-            <property name="datanucleus.schema.generateDatabase.mode" value="drop-and-create"/>
+            <!--  <property name="datanucleus.schema.generateDatabase.mode" value="drop-and-create"/> -->
         </properties>
     </persistence-unit>
 

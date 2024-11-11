@@ -1,0 +1,65 @@
+<!DOCTYPE jdo PUBLIC
+    "-//The Apache Software Foundation//DTD Java Data Objects Metadata 3.2//EN"
+    "https://db.apache.org/jdo/xmlns/jdo_3_2.dtd">
+    
+ <jdo>
+  <package name="mydomain.model">
+  
+    <class name="Inventory" table="INVENTORIES" >
+            <field name="name">
+                <column name="INVENTORY_NAME" length="100"/>
+            </field>
+            <field name="products" table="INVENTORY_PRODUCTS">
+                <join/>
+            </field>
+        </class>
+
+        <class name="Product" table="PRODUCTS" requires-extent="true">
+            <inheritance strategy="new-table">
+	           <discriminator strategy="class-name">
+	               <column name="clsname"/>
+	           </discriminator>
+	       	</inheritance>      
+            <field name="id">
+                <column name="PRODUCT_ID"/>
+            </field>
+            <field name="name">
+                <column name="PRODUCT_NAME" length="100"/>
+            </field>
+        </class>
+
+        <class name="Book" table="BOOKS" requires-extent="true">
+            <inheritance strategy="superclass-table"/>
+            <field name="author">
+                <column length="40"/>
+            </field>
+            <field name="isbn">
+                <column length="20" jdbc-type="CHAR"/>
+            </field>
+            <field name="publisher">
+                <column length="40"/>
+            </field>
+            <field name="data" persistence-modifier="persistent" default-fetch-group="true" recursion-depth="-1">
+            	<map key-type="String" value-type="DC_Value"/>
+            	<join><column name="id"/></join>
+            	<key><column name="field_id"/></key>
+            	<value>
+	            	<embedded>
+	            		<field name="stringValue" persistence-modifier="persistent" default-fetch-group="true">
+	            			<column name="string_value"/>
+	            		</field>	             		
+	             		<field name="dateValue" persistence-modifier="persistent" default-fetch-group="true">
+	            			<column name="date_value"/>
+	            		</field>      		
+	             	</embedded>
+            	</value>             	          	       	
+            </field>       
+        </class>
+        
+        <class name="DC_Value" embedded-only="true" detachable="true">
+	        <field name="stringValue" persistence-modifier="persistent" default-fetch-group="true"/>
+	        <field name="dateValue" persistence-modifier="persistent" default-fetch-group="true"/>         	
+        </class>
+     </package> 
+  </jdo>     
+             
