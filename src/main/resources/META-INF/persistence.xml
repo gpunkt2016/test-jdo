@@ -12,8 +12,10 @@
         <properties>
             <!-- Update these datastore details if different -->
             <property name="javax.jdo.PersistenceManagerFactoryClass" value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory"/>
-
+<!-- 
             <property name="javax.jdo.option.ConnectionURL" value="jdbc:h2:mem:nucleus"/>
+             -->
+             <property name="javax.jdo.option.ConnectionURL" value="jdbc:h2:./h2test;ACCESS_MODE_DATA=rws"/>
             <property name="javax.jdo.option.ConnectionUserName" value="sa"/>
             <property name="javax.jdo.option.ConnectionPassword" value=""/>
             
