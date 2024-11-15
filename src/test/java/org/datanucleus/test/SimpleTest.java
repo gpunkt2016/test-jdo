@@ -80,6 +80,52 @@ public class SimpleTest
       }
 
         pmf.close();
+        
+        this.readDataWithNewPMF();
         NucleusLogger.GENERAL.info(">> test END");
+    }
+    
+    protected void readDataWithNewPMF() {
+    	  NucleusLogger.GENERAL.info(">> readDataWithNewPMF START");
+          PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("MyTest");
+
+          PersistenceManager pm = null;
+          Transaction tx = null;
+          try
+          {
+          	pm = pmf.getPersistenceManager();
+              tx = pm.currentTransaction();
+              tx.begin();
+              Query<Product> query = pm.newQuery(Product.class ); 
+              ArrayList<Product> res = new ArrayList((Collection) query.execute());
+          	  query.closeAll();  
+          	  System.out.println("products found " + res.size());
+          	
+          	  if(res!=null) {
+          		  if(res.size()==1) {
+          			  Book b = (Book)res.get(0);
+          			  String s1 = (String)b.getValueOfDCV("s1");
+          			  Date d1 = (Date)b.getValueOfDCV("s2");
+          			  System.out.println("Hashmap Objects : s1 " + s1 + " d1 " + d1);
+          		  }
+          	  }
+              tx.commit();
+          }
+          catch (Throwable thr)
+          {
+              NucleusLogger.GENERAL.error(">> Exception in readDataWithNewPMF", thr);
+              fail("Failed test : " + thr.getMessage());
+          }
+          finally 
+          {
+              if (tx.isActive())
+              {
+                  tx.rollback();
+              }
+              pm.close();
+          }
+          pmf.close();
+          NucleusLogger.GENERAL.info(">> readDataWithNewPMF END");
+
     }
 }
